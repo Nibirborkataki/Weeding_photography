@@ -1,0 +1,45 @@
+.header {
+  display: grid;
+  gap: 0.9rem;
+  margin-bottom: 0.6rem;
+}
+
+.form {
+  display: grid;
+  gap: 1.5rem;
+}
+
+.row {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  align-items: center;
+  gap: 1rem;
+}
+
+.small {
+  font-size: 0.85rem;
+  color: var(--ink-soft);
+}
+
+.switch {
+  text-align: center;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.switch a {
+  color: var(--ink);
+  font-weight: 600;
+}
+
+.signedIn {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.signedIn .row {
+  justify-content: flex-start;
+  gap: 1.5rem 2rem;
+  margin-top: 1rem;
+}

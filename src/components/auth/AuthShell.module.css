@@ -1,0 +1,110 @@
+.shell {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  min-height: 100svh;
+}
+
+.visual {
+  position: sticky;
+  top: 0;
+  height: 100svh;
+  overflow: hidden;
+  color: var(--on-dark);
+}
+
+.visual img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(20, 17, 14, 0.45) 0%, transparent 35%, transparent 55%, rgba(20, 17, 14, 0.75) 100%);
+}
+
+.brand {
+  position: absolute;
+  top: 2rem;
+  left: 2.5rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 2rem;
+}
+
+.brand span {
+  font-family: var(--font-body);
+  font-style: normal;
+  font-size: 0.62rem;
+  font-weight: 600;
+  letter-spacing: 0.34em;
+  text-transform: uppercase;
+  margin-left: 0.4rem;
+  color: var(--on-dark-soft);
+}
+
+.quote {
+  position: absolute;
+  left: 2.5rem;
+  right: 2.5rem;
+  bottom: 2.5rem;
+  margin: 0;
+  max-width: 28rem;
+}
+
+.quote p {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+  line-height: 1.25;
+}
+
+.panel {
+  display: flex;
+  flex-direction: column;
+  padding: 2rem clamp(1.5rem, 5vw, 5rem) 3rem;
+}
+
+.topBar {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 1rem;
+}
+
+.mobileBrand {
+  display: none;
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.8rem;
+  margin-right: auto;
+}
+
+.content {
+  flex: 1;
+  display: grid;
+  align-content: center;
+  gap: 1.6rem;
+  width: 100%;
+  max-width: 27rem;
+  margin: 0 auto;
+  padding-block: 3rem;
+}
+
+@media (max-width: 900px) {
+  .shell {
+    grid-template-columns: 1fr;
+  }
+
+  .visual {
+    display: none;
+  }
+
+  .mobileBrand {
+    display: block;
+  }
+}

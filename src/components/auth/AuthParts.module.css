@@ -1,0 +1,114 @@
+.google {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  width: 100%;
+  min-height: 3.35rem;
+  padding: 0 1.5rem;
+  background: #fff;
+  border: 1px solid var(--line-strong);
+  font-size: 0.92rem;
+  font-weight: 600;
+  color: var(--ink);
+  transition: border-color 0.3s, box-shadow 0.4s var(--ease-out);
+}
+
+.google:hover:not(:disabled) {
+  border-color: var(--ink);
+  box-shadow: 0 12px 30px -18px rgba(29, 26, 23, 0.45);
+}
+
+.google:disabled {
+  cursor: progress;
+  opacity: 0.8;
+}
+
+.divider {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.24em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.divider::before,
+.divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--line);
+}
+
+.reveal {
+  position: absolute;
+  right: 0;
+  top: 50%;
+  transform: translateY(-50%);
+  display: grid;
+  place-items: center;
+  width: 2.4rem;
+  height: 2.4rem;
+  color: var(--ink-mute);
+  transition: color 0.3s;
+}
+
+.reveal:hover {
+  color: var(--ink);
+}
+
+.meter {
+  display: grid;
+  gap: 0.4rem;
+  margin-top: -0.8rem;
+}
+
+.meterBars {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 0.3rem;
+}
+
+.meterBars span {
+  height: 3px;
+  background: var(--line);
+  transition: background 0.4s;
+}
+
+.meterBars .s1 {
+  background: #c46a52;
+}
+
+.meterBars .s2 {
+  background: #d0a55a;
+}
+
+.meterBars .s3 {
+  background: #8fa36a;
+}
+
+.meterBars .s4 {
+  background: var(--success);
+}
+
+.meterLabel {
+  min-height: 1.2em;
+  font-size: 0.75rem;
+  color: var(--ink-mute);
+}
+
+.notice {
+  padding: 0.85rem 1rem;
+  background: var(--ivory-2);
+  border-left: 2px solid var(--gold);
+  font-size: 0.8rem;
+  line-height: 1.55;
+  color: var(--ink-soft);
+}
+
+.notice strong {
+  color: var(--ink);
+}

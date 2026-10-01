@@ -1,0 +1,564 @@
+@import 'lenis/dist/lenis.css';
+
+/* ─── Design tokens ───────────────────────────────────────── */
+:root {
+  --ivory: #f7f3ee;
+  --ivory-2: #efe8df;
+  --paper: #fbf9f6;
+  --sand: #e4d9ca;
+  --ink: #1d1a17;
+  --ink-2: #2a2622;
+  --ink-soft: #5f5850;
+  --ink-mute: #8a8178;
+  --line: rgba(29, 26, 23, 0.12);
+  --line-strong: rgba(29, 26, 23, 0.26);
+  --gold: #b8975a;
+  --gold-soft: #d8c29b;
+  --gold-ink: #9a7840; /* large accent text on ivory */
+  --gold-deep: #85652f; /* small text on ivory */
+  --on-dark: #f3ede4;
+  --on-dark-soft: rgba(243, 237, 228, 0.68);
+  --line-dark: rgba(243, 237, 228, 0.16);
+  --danger: #a4402f;
+  --success: #4f6b4a;
+
+  --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
+  --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+
+  --container: 1320px;
+  --gutter: clamp(1.25rem, 4vw, 3rem);
+  --section-y: clamp(5rem, 11vw, 9.5rem);
+  --nav-h: 84px;
+  --radius: 4px;
+  --radius-lg: 20px;
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.76, 0, 0.24, 1);
+  --shadow-soft: 0 30px 60px -30px rgba(29, 26, 23, 0.28);
+}
+
+/* ─── Base ────────────────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  -webkit-text-size-adjust: 100%;
+}
+
+html.scroll-locked {
+  overflow: hidden;
+}
+
+body {
+  margin: 0;
+  min-height: 100vh;
+  background: var(--ivory);
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1rem;
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+  text-rendering: optimizeLegibility;
+  font-variant-numeric: lining-nums;
+  overflow-x: clip;
+}
+
+img {
+  display: block;
+  max-width: 100%;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+button {
+  font: inherit;
+  color: inherit;
+  cursor: pointer;
+  background: none;
+  border: 0;
+  padding: 0;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  margin: 0;
+  font-family: var(--font-display);
+  font-weight: 300;
+  line-height: 1.02;
+  letter-spacing: -0.015em;
+  text-wrap: balance;
+}
+
+p {
+  margin: 0;
+}
+
+ul {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+::selection {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+:focus-visible {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 3px;
+}
+
+.skip-link {
+  position: fixed;
+  top: 0.75rem;
+  left: 0.75rem;
+  z-index: 200;
+  padding: 0.7rem 1.1rem;
+  background: var(--ink);
+  color: var(--on-dark);
+  font-size: 0.85rem;
+  transform: translateY(-160%);
+  transition: transform 0.3s var(--ease-out);
+}
+
+.skip-link:focus {
+  transform: none;
+}
+
+.visually-hidden {
+  position: absolute !important;
+  width: 1px;
+  height: 1px;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0 0 0 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* ─── Layout ──────────────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--container);
+  margin-inline: auto;
+  padding-inline: var(--gutter);
+}
+
+.section {
+  padding-block: var(--section-y);
+}
+
+.section--alt {
+  background: var(--ivory-2);
+}
+
+.section--dark {
+  background: var(--ink);
+  color: var(--on-dark);
+}
+
+/* ─── Typography ──────────────────────────────────────────── */
+.display-xl {
+  font-size: clamp(3.1rem, 8.6vw, 8.4rem);
+  line-height: 0.94;
+}
+
+.display-lg {
+  font-size: clamp(2.6rem, 6vw, 5.6rem);
+}
+
+.display-md {
+  font-size: clamp(2.2rem, 4.4vw, 4rem);
+}
+
+.display-sm {
+  font-size: clamp(1.6rem, 2.6vw, 2.3rem);
+}
+
+h1 em,
+h2 em,
+h3 em,
+.accent {
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-ink);
+}
+
+.section--dark h2 em,
+.section--dark h3 em,
+.on-dark em {
+  color: var(--gold-soft);
+}
+
+.eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.eyebrow::before {
+  content: '';
+  width: 2.2rem;
+  height: 1px;
+  background: var(--gold);
+}
+
+.section--dark .eyebrow,
+.on-dark .eyebrow {
+  color: var(--on-dark-soft);
+}
+
+@media (max-width: 480px) {
+  .eyebrow {
+    gap: 0.7rem;
+    font-size: 0.66rem;
+    letter-spacing: 0.2em;
+  }
+
+  .eyebrow::before {
+    width: 1.5rem;
+  }
+}
+
+.lead {
+  font-size: clamp(1.02rem, 1.3vw, 1.14rem);
+  line-height: 1.75;
+  color: var(--ink-soft);
+  max-width: 36rem;
+}
+
+.section--dark .lead {
+  color: var(--on-dark-soft);
+}
+
+.muted {
+  color: var(--ink-soft);
+}
+
+/* SplitText line masks — room for italic overhangs & descenders */
+.split-line-mask {
+  padding-bottom: 0.1em;
+  margin-bottom: -0.1em;
+  padding-inline: 0.06em;
+  margin-inline: -0.06em;
+}
+
+/* ─── Buttons & links ─────────────────────────────────────── */
+.btn {
+  --btn-bg: var(--ink);
+  --btn-fg: var(--on-dark);
+  --btn-fill: var(--gold);
+  --btn-fill-fg: var(--ink);
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.8rem;
+  min-height: 3.35rem;
+  padding: 0 1.9rem;
+  border: 1px solid var(--btn-bg);
+  background: var(--btn-bg);
+  color: var(--btn-fg);
+  font-size: 0.74rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  white-space: nowrap;
+  overflow: hidden;
+  isolation: isolate;
+  transition: color 0.5s var(--ease-out), border-color 0.5s var(--ease-out);
+}
+
+.btn::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: var(--btn-fill);
+  transform: translateY(101%);
+  transition: transform 0.55s var(--ease-out);
+}
+
+.btn:hover::before,
+.btn:focus-visible::before {
+  transform: none;
+}
+
+.btn:hover,
+.btn:focus-visible {
+  color: var(--btn-fill-fg);
+  border-color: var(--btn-fill);
+}
+
+.btn:disabled {
+  opacity: 0.6;
+  cursor: progress;
+}
+
+.btn--ghost {
+  --btn-bg: transparent;
+  --btn-fg: var(--ink);
+  --btn-fill: var(--ink);
+  --btn-fill-fg: var(--on-dark);
+  border-color: var(--line-strong);
+}
+
+.btn--light {
+  --btn-bg: var(--on-dark);
+  --btn-fg: var(--ink);
+  --btn-fill: var(--gold-soft);
+  --btn-fill-fg: var(--ink);
+}
+
+.btn--outline-light {
+  --btn-bg: transparent;
+  --btn-fg: var(--on-dark);
+  --btn-fill: var(--on-dark);
+  --btn-fill-fg: var(--ink);
+  border-color: var(--line-dark);
+}
+
+.btn--block {
+  width: 100%;
+}
+
+.btn__arrow {
+  transition: transform 0.5s var(--ease-out);
+}
+
+.btn:hover .btn__arrow {
+  transform: translateX(4px);
+}
+
+.link-arrow {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding-block: 0.3rem;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.link-arrow::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 1.6rem;
+  bottom: 0;
+  height: 1px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 0.6s var(--ease-out);
+}
+
+.link-arrow:hover::after {
+  transform: scaleX(0);
+}
+
+.link-arrow svg {
+  transition: transform 0.5s var(--ease-out);
+}
+
+.link-arrow:hover svg {
+  transform: translateX(5px);
+}
+
+.text-link {
+  background: linear-gradient(currentColor, currentColor) 0 100% / 100% 1px no-repeat;
+  transition: background-size 0.5s var(--ease-out);
+}
+
+.text-link:hover {
+  background-size: 0 1px;
+  background-position: 100% 100%;
+}
+
+/* ─── Forms ───────────────────────────────────────────────── */
+.form-grid {
+  display: grid;
+  gap: 1.6rem 1.75rem;
+}
+
+@media (min-width: 640px) {
+  .form-grid--2 {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .form-grid .span-2 {
+    grid-column: 1 / -1;
+  }
+}
+
+.field {
+  display: grid;
+  gap: 0.45rem;
+}
+
+.field__label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.field__label small {
+  font-weight: 500;
+  letter-spacing: 0.06em;
+  text-transform: none;
+  color: var(--ink-mute);
+}
+
+.field__control {
+  position: relative;
+}
+
+.field__input {
+  width: 100%;
+  padding: 0.85rem 0;
+  background: transparent;
+  border: 0;
+  border-bottom: 1px solid var(--line-strong);
+  border-radius: 0;
+  color: var(--ink);
+  font: inherit;
+  font-size: 1rem;
+  transition: border-color 0.3s;
+  appearance: none;
+}
+
+.field__input::placeholder {
+  color: var(--ink-mute);
+  opacity: 0.8;
+}
+
+.field__input:focus {
+  outline: none;
+}
+
+.field__control::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1px;
+  background: var(--gold-deep);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.5s var(--ease-out);
+  pointer-events: none;
+}
+
+.field__control:focus-within::after {
+  transform: none;
+}
+
+.field__control:has(> button) .field__input {
+  padding-right: 2.8rem;
+}
+
+textarea.field__input {
+  min-height: 8.5rem;
+  resize: vertical;
+  line-height: 1.6;
+}
+
+select.field__input {
+  padding-right: 2rem;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' fill='none'%3E%3Cpath d='M1 1.5l5 5 5-5' stroke='%235f5850' stroke-width='1.2'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right 0.25rem center;
+  cursor: pointer;
+}
+
+input[type='date'].field__input {
+  min-height: 3.1rem;
+}
+
+.field--invalid .field__input {
+  border-bottom-color: var(--danger);
+}
+
+.field__error {
+  font-size: 0.8rem;
+  color: var(--danger);
+}
+
+.field__hint {
+  font-size: 0.8rem;
+  color: var(--ink-mute);
+}
+
+.checkbox {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+  cursor: pointer;
+}
+
+.checkbox input {
+  flex: none;
+  width: 1.1rem;
+  height: 1.1rem;
+  margin: 0.2rem 0 0;
+  accent-color: var(--ink);
+  cursor: pointer;
+}
+
+.form-status {
+  font-size: 0.88rem;
+  color: var(--danger);
+}
+
+/* ─── Utilities ───────────────────────────────────────────── */
+.img-cover {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.spinner {
+  width: 1rem;
+  height: 1rem;
+  border: 1.5px solid currentColor;
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}

@@ -1,0 +1,101 @@
+.section {
+  padding-bottom: var(--section-y);
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: 4fr 7fr;
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.info {
+  display: grid;
+  gap: 2rem;
+}
+
+.block {
+  display: grid;
+  gap: 0.4rem;
+}
+
+.label {
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.big {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: clamp(1.5rem, 2.2vw, 1.9rem);
+  line-height: 1.2;
+}
+
+.socials {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.2rem;
+}
+
+.image {
+  aspect-ratio: 3 / 2;
+  margin-top: 1rem;
+}
+
+.formCard {
+  padding: clamp(1.75rem, 4vw, 3.25rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.form {
+  display: grid;
+  gap: 2rem;
+  justify-items: start;
+}
+
+.form > :global(.form-grid) {
+  width: 100%;
+}
+
+.formTitle {
+  font-size: clamp(2rem, 3vw, 2.6rem);
+}
+
+.thanks {
+  display: grid;
+  gap: 1rem;
+  justify-items: start;
+  animation: fade-up 0.8s var(--ease-out) both;
+}
+
+.thanksTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.4vw, 3rem);
+  line-height: 1.1;
+}
+
+.thanksTitle em {
+  font-style: italic;
+  color: var(--gold-ink);
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (max-width: 900px) {
+  .grid {
+    grid-template-columns: 1fr;
+  }
+
+  .formCard {
+    order: -1;
+  }
+}

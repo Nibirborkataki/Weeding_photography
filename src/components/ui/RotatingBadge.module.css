@@ -1,0 +1,34 @@
+.badge {
+  position: relative;
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+}
+
+.ring {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  animation: rotate 22s linear infinite;
+}
+
+.text {
+  font-family: var(--font-body);
+  font-size: 8.6px;
+  font-weight: 600;
+  letter-spacing: 2.4px;
+  text-transform: uppercase;
+  fill: var(--ink-soft);
+}
+
+.center {
+  font-size: 1.1rem;
+  color: var(--gold);
+}
+
+@keyframes rotate {
+  to {
+    transform: rotate(360deg);
+  }
+}

@@ -1,0 +1,50 @@
+.cta {
+  position: relative;
+  display: grid;
+  align-items: center;
+  min-height: clamp(34rem, 80vh, 48rem);
+  overflow: hidden;
+  isolation: isolate;
+  color: var(--on-dark);
+}
+
+.bg {
+  position: absolute !important;
+  inset: 0;
+  z-index: -2;
+}
+
+.shade {
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  background: linear-gradient(100deg, rgba(20, 17, 14, 0.82) 0%, rgba(20, 17, 14, 0.55) 45%, rgba(20, 17, 14, 0.15) 100%);
+}
+
+.content {
+  display: grid;
+  gap: 1.6rem;
+  justify-items: start;
+  padding-block: 5rem;
+}
+
+.content h2 {
+  max-width: 12ch;
+}
+
+.body {
+  display: grid;
+  gap: 2rem;
+}
+
+.text {
+  max-width: 30rem;
+  color: var(--on-dark-soft);
+  font-size: 1.05rem;
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+}

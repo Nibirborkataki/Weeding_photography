@@ -1,0 +1,46 @@
+.heading {
+  display: grid;
+  gap: 1.75rem 3rem;
+  margin-bottom: clamp(3rem, 6vw, 5rem);
+}
+
+.split {
+  grid-template-columns: 1.3fr 1fr;
+  align-items: end;
+}
+
+.stack {
+  grid-template-columns: 1fr;
+  gap: 1.4rem;
+  margin-bottom: clamp(2rem, 4vw, 3rem);
+}
+
+.center {
+  justify-items: center;
+  text-align: center;
+}
+
+.center .aside {
+  justify-items: center;
+}
+
+.main {
+  display: grid;
+  gap: 1.2rem;
+}
+
+.center .main {
+  justify-items: center;
+}
+
+.aside {
+  display: grid;
+  gap: 1.4rem;
+  justify-items: start;
+}
+
+@media (max-width: 860px) {
+  .split {
+    grid-template-columns: 1fr;
+  }
+}

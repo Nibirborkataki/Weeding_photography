@@ -1,0 +1,55 @@
+.summary {
+  display: grid;
+  gap: 1.8rem;
+}
+
+.score {
+  display: flex;
+  align-items: center;
+  gap: 1.2rem;
+}
+
+.average {
+  font-family: var(--font-display);
+  font-weight: 300;
+  font-size: 5rem;
+  line-height: 0.85;
+}
+
+.count {
+  margin-top: 0.3rem;
+  font-size: 0.82rem;
+  color: var(--ink-soft);
+}
+
+.bars {
+  display: grid;
+  gap: 0.55rem;
+  max-width: 22rem;
+  font-size: 0.8rem;
+  color: var(--ink-soft);
+}
+
+.bars li {
+  display: grid;
+  grid-template-columns: 2rem 1fr 1.5rem;
+  align-items: center;
+  gap: 0.8rem;
+}
+
+.track {
+  height: 3px;
+  background: var(--line);
+  overflow: hidden;
+}
+
+.fill {
+  display: block;
+  height: 100%;
+  background: var(--gold);
+  transition: width 1s var(--ease-out);
+}
+
+.num {
+  text-align: right;
+}
