@@ -8,6 +8,7 @@ import { useToast } from '../../context/ToastContext'
 import { useIntroDone } from '../../context/IntroContext'
 import { TransitionLink } from '../transition/PageTransition'
 import { ArrowRight } from '../ui/Icons'
+import Wordmark from '../ui/Wordmark'
 import styles from './Navbar.module.css'
 
 function UserMenu({ user, onSignOut }) {
@@ -146,8 +147,7 @@ export default function Navbar() {
       <header ref={headerRef} className={headerClass}>
         <div className={`container ${styles.bar}`}>
           <TransitionLink to="/" className={styles.logo} aria-label={`${site.fullName} — home`}>
-            <span className={styles.logoMark}>{site.name}</span>
-            <span className={styles.logoSub}>Studio</span>
+            <Wordmark />
           </TransitionLink>
 
           <nav className={styles.nav} aria-label="Main">

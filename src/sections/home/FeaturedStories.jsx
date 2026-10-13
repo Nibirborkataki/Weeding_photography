@@ -58,7 +58,7 @@ export default function FeaturedStories() {
           <div>
             <p className="eyebrow">Selected work</p>
             <SplitReveal as="h2" id="stories-title" className="display-lg">
-              Love stories, <em>told well</em>
+              Stories, <em>told well</em>
             </SplitReveal>
           </div>
           <TransitionLink to="/portfolio" className="link-arrow">
@@ -70,12 +70,13 @@ export default function FeaturedStories() {
           {featuredStories.map((story, i) => (
             <article key={story.id} className={styles.card}>
               <div className={styles.media}>
-                <img src={story.src} alt={`${story.couple} — ${story.place}`} loading="lazy" decoding="async" />
+                <img src={story.src} alt={`${story.title} — ${story.type}, ${story.place}`} loading="lazy" decoding="async" />
+                <span className={styles.type}>{story.type}</span>
               </div>
               <div className={styles.meta}>
                 <span className={styles.index}>0{i + 1}</span>
                 <div>
-                  <h3>{story.couple}</h3>
+                  <h3>{story.title}</h3>
                   <p>
                     {story.place} · {story.year}
                   </p>

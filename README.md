@@ -1,6 +1,6 @@
-# Aurelia Studio — Wedding Photography Website
+# Prism Snap Studio — Photography Website
 
-A modern, editorial wedding-photography site built with **React + Vite**, **GSAP**, **Three.js** (React Three Fiber) and **Lenis** smooth scrolling. Frontend only for now — all data is stored in the browser until a backend is added.
+A modern, editorial photography studio site — weddings first, plus family ceremonies (annaprashan, mundan, namkaran…), commercial & advertising, portrait work and a photography **Academy** — built with **React + Vite**, **GSAP**, **Three.js** (React Three Fiber) and **Lenis** smooth scrolling. Frontend only for now — all data is stored in the browser until a backend is added.
 
 ## Getting started
 
@@ -15,12 +15,13 @@ npm run build      # production build → dist/
 
 | Route | What's there |
 | --- | --- |
-| `/` | Loader, 3D gold-rings hero, philosophy, pinned horizontal "Selected work", collections, process, testimonials carousel, **leave-a-review form**, booking CTA |
-| `/portfolio` | Filterable gallery (GSAP Flip) + lightbox (keyboard ← → Esc) |
-| `/services` | Collections, what's included, add-ons, FAQ |
+| `/` | Logo loader, 3D gold-rings hero, philosophy, "What we photograph" services grid, pinned horizontal "Selected work", process, testimonials carousel, **leave-a-review form**, booking CTA |
+| `/academy` | Photography Academy: course packages with In-studio / Live online pricing, comparison table, weekend workshops, upcoming batches, "What you'll need", student stories, **enquiry form with redeem codes**, FAQ |
+| `/portfolio` | Filterable gallery — Weddings, Pre-wedding, Ceremonies, Commercial, Portraits (GSAP Flip) + lightbox. `?category=ceremonies` opens pre-filtered |
+| `/services` | One section per service with its packages, add-ons, FAQ. `/services#commercial` jumps to a section |
 | `/about` | Story, animated stats, values, quote |
 | `/reviews` | All reviews, rating breakdown, sort, review form |
-| `/booking` | 4-step booking form with live summary (`?package=signature` preselects) |
+| `/booking` | 5-step booking: occasion → date & venue → package → details → confirm. `?service=ceremonies` or `?package=signature` preselects |
 | `/contact` | Contact details + message form |
 | `/signin`, `/signup` | Email/password + "Continue with Google" (**mock**) |
 
@@ -28,7 +29,10 @@ npm run build      # production build → dist/
 
 - **Brand, contact details, stats, currency** → `src/config/site.js`
 - **Photos** → replace files in `public/images/` (keep the same names), or edit `src/data/images.js`. Current images are free placeholders from [Unsplash](https://unsplash.com).
-- **Collections & prices** → `src/data/packages.js`
+- **Services (names, copy, occasions, cover photos)** → `src/data/services.js`
+- **Packages, prices & add-ons per service** → `src/data/packages.js`
+- **Academy courses, workshops, batches, requirements & FAQ** → `src/data/academy.js`
+- **Academy redeem codes** → `src/data/redeemCodes.js` (placeholders — real codes must be validated by the backend)
 - **Process steps, FAQ, values** → `src/data/content.js`
 - **Seed testimonials** → `src/data/reviews.js` — these are **placeholders**; replace them with real client reviews before launch.
 - **Colours & fonts** → CSS variables at the top of `src/styles/global.css`
@@ -38,7 +42,7 @@ npm run build      # production build → dist/
 All data access goes through `src/services/`:
 
 - `authService.js` — sign up / sign in / Google / sign out
-- `bookingService.js`, `reviewService.js`, `contactService.js`
+- `bookingService.js`, `reviewService.js`, `contactService.js`, `academyService.js`
 
 Each function returns a Promise and currently persists to `localStorage`. Swap their bodies for `fetch()` calls (or Firebase, Supabase, etc.) and the UI keeps working unchanged. Validation lives in `src/utils/validation.js` and should be mirrored on the server.
 

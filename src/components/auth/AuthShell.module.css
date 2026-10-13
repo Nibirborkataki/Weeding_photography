@@ -28,22 +28,8 @@
 
 .brand {
   position: absolute;
-  top: 2rem;
+  top: 2.2rem;
   left: 2.5rem;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 2rem;
-}
-
-.brand span {
-  font-family: var(--font-body);
-  font-style: normal;
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  margin-left: 0.4rem;
-  color: var(--on-dark-soft);
 }
 
 .quote {
@@ -78,9 +64,6 @@
 
 .mobileBrand {
   display: none;
-  font-family: var(--font-display);
-  font-style: italic;
-  font-size: 1.8rem;
   margin-right: auto;
 }
 

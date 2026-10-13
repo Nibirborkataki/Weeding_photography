@@ -1,4 +1,5 @@
 import { useLayoutEffect, useMemo, useRef, useState } from 'react'
+import { useSearchParams } from 'react-router-dom'
 import { gsap, Flip, ScrollTrigger, useGSAP, prefersReducedMotion } from '../lib/gsap'
 import PageHeader from '../components/ui/PageHeader'
 import Lightbox from '../components/ui/Lightbox'
@@ -9,7 +10,12 @@ import styles from './Portfolio.module.css'
 
 export default function Portfolio() {
   usePageTitle('Portfolio')
-  const [filter, setFilter] = useState('all')
+  const [params] = useSearchParams()
+  // "/portfolio?category=ceremonies" (linked from the Services page) opens pre-filtered.
+  const [filter, setFilter] = useState(() => {
+    const requested = params.get('category')
+    return portfolioCategories.some((c) => c.id === requested) ? requested : 'all'
+  })
   const [lightboxIndex, setLightboxIndex] = useState(null)
   const gridRef = useRef(null)
   const flipState = useRef(null)
@@ -71,7 +77,7 @@ export default function Portfolio() {
             Moments, <em>kept</em> forever
           </>
         }
-        intro="A selection of ceremonies, portraits and quiet in-between moments from celebrations across India and around the world."
+        intro="Weddings first and always — alongside the family ceremonies, portraits and brand stories we’ve been trusted with across India and beyond."
       />
 
       <section className={styles.section}>

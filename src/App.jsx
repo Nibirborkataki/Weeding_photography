@@ -9,6 +9,7 @@ import { ScrollReset, TransitionProvider } from './components/transition/PageTra
 import Loader from './components/loader/Loader'
 import Layout from './components/layout/Layout'
 import Home from './pages/Home'
+import Academy from './pages/Academy'
 import Portfolio from './pages/Portfolio'
 import Services from './pages/Services'
 import About from './pages/About'
@@ -25,12 +26,28 @@ export default function App() {
 
   useEffect(() => initSmoothScroll(), [])
 
-  // Late-loading fonts and images change layout — re-measure scroll animations.
+  // Late-loading fonts, images or content change the page height — re-measure scroll animations.
   useEffect(() => {
     const refresh = () => ScrollTrigger.refresh()
     document.fonts?.ready.then(refresh)
     window.addEventListener('load', refresh)
-    return () => window.removeEventListener('load', refresh)
+
+    let lastHeight = document.body.offsetHeight
+    let timer
+    const observer = new ResizeObserver(() => {
+      const height = document.body.offsetHeight
+      if (Math.abs(height - lastHeight) < 2) return
+      lastHeight = height
+      clearTimeout(timer)
+      timer = setTimeout(refresh, 250)
+    })
+    observer.observe(document.body)
+
+    return () => {
+      window.removeEventListener('load', refresh)
+      observer.disconnect()
+      clearTimeout(timer)
+    }
   }, [])
 
   return (
@@ -43,6 +60,7 @@ export default function App() {
             <Routes>
               <Route element={<Layout />}>
                 <Route index element={<Home />} />
+                <Route path="academy" element={<Academy />} />
                 <Route path="portfolio" element={<Portfolio />} />
                 <Route path="services" element={<Services />} />
                 <Route path="about" element={<About />} />

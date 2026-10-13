@@ -3,6 +3,7 @@ import { gsap, useGSAP, prefersReducedMotion } from '../../lib/gsap'
 import { useIntroDone } from '../../context/IntroContext'
 import { TransitionLink } from '../transition/PageTransition'
 import { ArrowLeft } from '../ui/Icons'
+import Wordmark from '../ui/Wordmark'
 import { site } from '../../config/site'
 import styles from './AuthShell.module.css'
 
@@ -28,8 +29,8 @@ export default function AuthShell({ image, quote, children }) {
       <aside className={styles.visual}>
         <img src={image.src} alt={image.alt} />
         <div className={styles.shade} aria-hidden="true" />
-        <TransitionLink to="/" className={styles.brand}>
-          {site.name} <span>Studio</span>
+        <TransitionLink to="/" className={styles.brand} aria-label={`${site.fullName} — home`}>
+          <Wordmark />
         </TransitionLink>
         <blockquote className={styles.quote}>
           <p>{quote}</p>
@@ -38,8 +39,8 @@ export default function AuthShell({ image, quote, children }) {
 
       <main id="main" className={styles.panel}>
         <div className={styles.topBar}>
-          <TransitionLink to="/" className={styles.mobileBrand}>
-            {site.name}
+          <TransitionLink to="/" className={styles.mobileBrand} aria-label={`${site.fullName} — home`}>
+            <Wordmark />
           </TransitionLink>
           <TransitionLink to="/" className="link-arrow">
             <ArrowLeft /> Back to site

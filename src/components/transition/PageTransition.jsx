@@ -25,6 +25,11 @@ export function TransitionProvider({ children }) {
         smoothScrollTo(0)
         return
       }
+      // Same page, different section (e.g. "/services#commercial" from the footer): no curtain.
+      if (target.includes('#') && target.split('#')[0] === location.pathname) {
+        navigate(to, options)
+        return
+      }
       if (prefersReducedMotion()) {
         navigate(to, options)
         return
@@ -50,7 +55,7 @@ export function TransitionProvider({ children }) {
     <TransitionContext.Provider value={go}>
       {children}
       <div ref={overlayRef} className={styles.overlay} aria-hidden="true">
-        <span className={styles.mark}>{site.name}</span>
+        <img className={styles.mark} src={site.logo} alt="" />
       </div>
     </TransitionContext.Provider>
   )

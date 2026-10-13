@@ -1,4 +1,4 @@
-import { formatPrice } from '../config/site'
+import { formatPackagePrice } from '../config/site'
 import { TransitionLink } from './transition/PageTransition'
 import { Check } from './ui/Icons'
 import styles from './PackageCard.module.css'
@@ -14,7 +14,7 @@ export default function PackageCard({ pkg, index, compact = false }) {
       <h3 className={styles.name}>{pkg.name}</h3>
       <p className={styles.tagline}>{pkg.tagline}</p>
       <p className={styles.price}>
-        <span>from</span> {formatPrice(pkg.price)}
+        {pkg.price != null && <span>from</span>} {formatPackagePrice(pkg.price)}
       </p>
       <p className={styles.coverage}>{pkg.coverage}</p>
       <ul className={styles.features}>
@@ -28,7 +28,7 @@ export default function PackageCard({ pkg, index, compact = false }) {
         to={`/booking?package=${pkg.id}`}
         className={`btn btn--block ${pkg.featured ? 'btn--light' : 'btn--ghost'}`}
       >
-        Choose {pkg.name}
+        {pkg.price == null ? 'Request a quote' : `Choose ${pkg.name}`}
       </TransitionLink>
     </article>
   )

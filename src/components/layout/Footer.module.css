@@ -19,7 +19,7 @@
 
 .grid {
   display: grid;
-  grid-template-columns: 1.4fr repeat(3, 1fr);
+  grid-template-columns: 1.3fr repeat(4, 1fr);
   gap: 2.5rem;
   padding-block: clamp(3rem, 6vw, 4.5rem);
 }
@@ -60,17 +60,33 @@
 }
 
 .wordmark {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 300;
-  font-size: clamp(6rem, 26vw, 24rem);
-  line-height: 0.8;
-  letter-spacing: -0.03em;
+  font-family: var(--font-brand);
+  font-weight: 400;
+  font-size: clamp(2.6rem, 10.4vw, 10.5rem);
+  line-height: 0.9;
+  letter-spacing: 0.08em;
+  margin-right: -0.08em;
   text-align: center;
+  text-transform: uppercase;
+  white-space: nowrap;
   color: transparent;
-  -webkit-text-stroke: 1px rgba(216, 194, 155, 0.35);
+  -webkit-text-stroke: 1px rgba(216, 194, 155, 0.38);
   user-select: none;
-  margin-bottom: -0.04em;
+  padding-bottom: 0.12em;
+}
+
+/* Fade back slowly when the pointer leaves… */
+.letter {
+  display: inline-block;
+  transition: color 1.1s var(--ease-out), -webkit-text-stroke-color 1.1s var(--ease-out), transform 1.1s var(--ease-out);
+}
+
+/* …but fill quickly on hover, so sweeping across leaves a soft gold trail. */
+.letter:hover {
+  color: var(--gold-soft);
+  -webkit-text-stroke-color: var(--gold-soft);
+  transform: translateY(-0.04em);
+  transition-duration: 0.25s;
 }
 
 .bottom {

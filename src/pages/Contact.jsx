@@ -14,9 +14,12 @@ import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Contact.module.css'
 
 const SUBJECTS = [
+  { value: 'wedding', label: 'Wedding or pre-wedding' },
+  { value: 'ceremony', label: 'Ceremony — annaprashan, mundan, puja…' },
+  { value: 'commercial', label: 'Commercial & advertising shoot' },
+  { value: 'portraits', label: 'Maternity, newborn or family portraits' },
+  { value: 'academy', label: 'Photography classes — Academy' },
   { value: 'general', label: 'General enquiry' },
-  { value: 'pricing', label: 'Pricing & availability' },
-  { value: 'destination', label: 'Destination wedding' },
   { value: 'press', label: 'Press & collaborations' },
 ]
 
@@ -46,7 +49,7 @@ export default function Contact() {
             Let’s <em>talk</em>
           </>
         }
-        intro="Questions about dates, collections or destination weddings? Drop us a line — a real person reads every message."
+        intro="A wedding, a family ceremony, a portrait session or a brand shoot — tell us what you have in mind. A real person reads every message."
       />
 
       <section className={styles.section}>

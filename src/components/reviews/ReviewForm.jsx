@@ -9,11 +9,23 @@ import styles from './ReviewForm.module.css'
 
 const MAX = 800
 
+const REVIEW_OCCASIONS = [
+  'Wedding',
+  'Pre-wedding',
+  'Annaprashan',
+  'Mundan ceremony',
+  'Other ceremony',
+  'Commercial',
+  'Maternity',
+  'Newborn',
+  'Family portraits',
+].map((label) => ({ value: label, label }))
+
 export default function ReviewForm({ onSubmit }) {
   const { user } = useAuth()
   const toast = useToast()
   const { values, status, bind, setValue, handleSubmit, reset, errors } = useForm(
-    { name: user?.name ?? '', location: '', rating: 0, title: '', message: '' },
+    { name: user?.name ?? '', occasion: '', location: '', rating: 0, title: '', message: '' },
     validateReview,
   )
 
@@ -43,9 +55,17 @@ export default function ReviewForm({ onSubmit }) {
     <form className={styles.form} onSubmit={submit} noValidate>
       <StarInput value={values.rating} onChange={(n) => setValue('rating', n)} error={errors.rating} />
       <div className="form-grid form-grid--2">
-        <Field label="Your names" placeholder="e.g. Asha & Vikram" autoComplete="name" {...bind('name')} />
-        <Field label="Wedding location" optional placeholder="e.g. Udaipur" {...bind('location')} />
-        <Field className="span-2" label="Headline" optional placeholder="Sum it up in a few words" maxLength={80} {...bind('title')} />
+        <Field label="Your name(s) or brand" placeholder="e.g. Asha & Vikram" autoComplete="name" {...bind('name')} />
+        <Field
+          as="select"
+          label="What did we photograph?"
+          optional
+          placeholder="Choose an occasion"
+          options={REVIEW_OCCASIONS}
+          {...bind('occasion')}
+        />
+        <Field label="Location" optional placeholder="e.g. Udaipur" {...bind('location')} />
+        <Field label="Headline" optional placeholder="Sum it up in a few words" maxLength={80} {...bind('title')} />
         <Field
           className="span-2"
           as="textarea"

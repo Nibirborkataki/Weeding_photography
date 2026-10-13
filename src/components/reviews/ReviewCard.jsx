@@ -6,7 +6,10 @@ const dateFormat = new Intl.DateTimeFormat('en-GB', { month: 'long', year: 'nume
 export default function ReviewCard({ review }) {
   return (
     <article className={styles.card}>
-      <Stars value={review.rating} />
+      <div className={styles.top}>
+        <Stars value={review.rating} />
+        {review.occasion && <span className={styles.occasion}>{review.occasion}</span>}
+      </div>
       {review.title && <h3 className={styles.title}>{review.title}</h3>}
       <p className={styles.message}>“{review.message}”</p>
       <footer className={styles.footer}>

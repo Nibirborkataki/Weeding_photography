@@ -3,10 +3,10 @@ import Reveal from '../motion/Reveal'
 import ParallaxImage from '../motion/ParallaxImage'
 import styles from './PageHeader.module.css'
 
-/** Top-of-page header used by inner pages. */
-export default function PageHeader({ eyebrow, title, intro, image, children }) {
+/** Top-of-page header used by inner pages. `aside` replaces the image slot with custom content. */
+export default function PageHeader({ eyebrow, title, intro, image, aside, children }) {
   return (
-    <header className={`${styles.header} ${image ? styles.withImage : ''}`}>
+    <header className={`${styles.header} ${image || aside ? styles.withImage : ''}`}>
       <div className={`container ${styles.inner}`}>
         <div className={styles.text}>
           <Reveal immediate delay={0.35}>
@@ -23,6 +23,7 @@ export default function PageHeader({ eyebrow, title, intro, image, children }) {
           )}
         </div>
         {image && <ParallaxImage className={styles.image} {...image} eager />}
+        {aside}
       </div>
     </header>
   )

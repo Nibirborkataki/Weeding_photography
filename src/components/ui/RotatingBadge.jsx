@@ -11,7 +11,9 @@ export default function RotatingBadge({ text }) {
           <path id={id} d="M60,60 m-46,0 a46,46 0 1,1 92,0 a46,46 0 1,1 -92,0" />
         </defs>
         <text className={styles.text}>
-          <textPath href={`#${id}`}>{text}</textPath>
+          <textPath href={`#${id}`} textLength="288" lengthAdjust="spacing">
+            {text}
+          </textPath>
         </text>
       </svg>
       <span className={styles.center}>✦</span>

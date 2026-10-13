@@ -20,6 +20,7 @@ export async function addReview(input) {
     id: createId(),
     name: input.name.trim(),
     location: input.location?.trim() ?? '',
+    occasion: input.occasion?.trim() ?? '',
     rating: Number(input.rating),
     title: input.title?.trim() ?? '',
     message: input.message.trim(),

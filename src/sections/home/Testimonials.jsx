@@ -11,7 +11,7 @@ const INTERVAL = 7000
 const fallbackImages = portfolio.filter((p) => p.shape === 'tall').map((p) => p.src)
 
 export default function Testimonials({ reviews }) {
-  const slides = reviews.slice(0, 6)
+  const slides = reviews.slice(0, 7)
   const [index, setIndex] = useState(0)
   const [paused, setPaused] = useState(false)
   const [inView, setInView] = useState(false)
@@ -64,7 +64,7 @@ export default function Testimonials({ reviews }) {
           eyebrow="Kind words"
           title={
             <>
-              Loved by <em>our couples</em>
+              Loved by couples, <em>families &amp; brands</em>
             </>
           }
           aside={
@@ -106,7 +106,9 @@ export default function Testimonials({ reviews }) {
               </blockquote>
               <p className={styles.author}>
                 {current.name}
-                {current.location && <span> — {current.location}</span>}
+                {(current.occasion || current.location) && (
+                  <span> — {[current.occasion, current.location].filter(Boolean).join(' · ')}</span>
+                )}
               </p>
             </div>
 

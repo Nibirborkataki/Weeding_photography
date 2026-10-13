@@ -38,27 +38,9 @@
 
 .logo {
   display: inline-flex;
-  align-items: baseline;
-  gap: 0.55rem;
+  align-items: center;
   position: relative;
   z-index: 2;
-}
-
-.logoMark {
-  font-family: var(--font-display);
-  font-style: italic;
-  font-weight: 400;
-  font-size: 1.85rem;
-  line-height: 1;
-  letter-spacing: 0.01em;
-}
-
-.logoSub {
-  font-size: 0.62rem;
-  font-weight: 600;
-  letter-spacing: 0.34em;
-  text-transform: uppercase;
-  color: var(--ink-soft);
 }
 
 .nav ul {
@@ -238,10 +220,6 @@
 .menuOpen .burger,
 .menuOpen .logo {
   color: var(--on-dark);
-}
-
-.menuOpen .logoSub {
-  color: var(--on-dark-soft);
 }
 
 .menuOpen .burger span:first-child {

@@ -7,6 +7,7 @@ export const seedReviews = [
     id: 'seed-1',
     name: 'Ananya & Rohan',
     location: 'Udaipur, Rajasthan',
+    occasion: 'Wedding',
     rating: 5,
     title: 'Every ritual, every tear, every laugh',
     message:
@@ -18,6 +19,7 @@ export const seedReviews = [
     id: 'seed-2',
     name: 'Claire & James',
     location: 'Amalfi Coast, Italy',
+    occasion: 'Wedding',
     rating: 5,
     title: 'Worth every single moment',
     message:
@@ -29,6 +31,7 @@ export const seedReviews = [
     id: 'seed-3',
     name: 'Meera & Arjun',
     location: 'Rishikesh, Uttarakhand',
+    occasion: 'Wedding',
     rating: 5,
     title: 'Calm, kind and incredibly talented',
     message:
@@ -40,6 +43,7 @@ export const seedReviews = [
     id: 'seed-4',
     name: 'Sofia & Daniel',
     location: 'Vienna, Austria',
+    occasion: 'Wedding',
     rating: 5,
     title: 'Pure elegance',
     message:
@@ -51,6 +55,7 @@ export const seedReviews = [
     id: 'seed-5',
     name: 'Priya & Karan',
     location: 'Jodhpur, Rajasthan',
+    occasion: 'Wedding',
     rating: 5,
     title: 'Three days, zero stress',
     message:
@@ -62,11 +67,60 @@ export const seedReviews = [
     id: 'seed-6',
     name: 'Emma & Liam',
     location: 'Lake Bled, Slovenia',
+    occasion: 'Wedding',
     rating: 4,
     title: 'Beautiful, honest photographs',
     message:
       'Such a gentle, thoughtful approach. The gallery took a little longer than expected in peak season, but the result was absolutely worth the wait.',
     createdAt: '2025-06-27T10:00:00.000Z',
     image: src('lakeside-portrait'),
+  },
+  {
+    id: 'seed-7',
+    name: 'Sutapa & Dipankar',
+    location: 'Kolkata, West Bengal',
+    occasion: 'Annaprashan',
+    rating: 5,
+    title: 'They understood every ritual',
+    message:
+      'Our son’s mukhe bhaat was chaotic in the best way — three generations, one tiny topor and a lot of rice. They knew exactly when the important moments were coming and never once got in the way of the priest.',
+    createdAt: '2026-02-20T10:00:00.000Z',
+    image: src('annaprashan-blessing'),
+  },
+  {
+    id: 'seed-8',
+    name: 'Heritage Gold Jewellers',
+    location: 'Jaipur, Rajasthan',
+    occasion: 'Commercial',
+    rating: 5,
+    title: 'Our best-selling campaign yet',
+    message:
+      'The team lit our bridal collection beautifully and delivered retouched images two days early. The new catalogue and social campaign have had the strongest response we have ever seen.',
+    createdAt: '2025-11-12T10:00:00.000Z',
+    image: src('jewellery-jhumka'),
+  },
+  {
+    id: 'seed-9',
+    name: 'Rekha & Amit',
+    location: 'Varanasi, Uttar Pradesh',
+    occasion: 'Mundan ceremony',
+    rating: 5,
+    title: 'Calm, patient and so respectful',
+    message:
+      'Mundan ceremonies are emotional and a little unpredictable with a toddler! They were patient, quiet and caught the moment our daughter laughed through it all. The photos are treasures.',
+    createdAt: '2025-10-02T10:00:00.000Z',
+    image: src('mundan-ceremony'),
+  },
+  {
+    id: 'seed-10',
+    name: 'Nandini Sharma',
+    location: 'Shillong, Meghalaya',
+    occasion: 'Maternity',
+    rating: 5,
+    title: 'I felt beautiful',
+    message:
+      'I was unsure about a maternity shoot, but the golden-hour session was so relaxed. Six months later they photographed our newborn at home too — we are customers for life.',
+    createdAt: '2025-09-05T10:00:00.000Z',
+    image: src('maternity-golden-hour'),
   },
 ]

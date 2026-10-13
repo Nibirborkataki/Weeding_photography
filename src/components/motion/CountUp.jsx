@@ -4,7 +4,8 @@ import { gsap, useGSAP, prefersReducedMotion } from '../../lib/gsap'
 /** Number that counts up the first time it scrolls into view. */
 export default function CountUp({ value, decimals = 0, suffix = '' }) {
   const ref = useRef(null)
-  const format = (n) => `${n.toFixed(decimals)}${suffix}`
+  const formatter = new Intl.NumberFormat('en-IN', { minimumFractionDigits: decimals, maximumFractionDigits: decimals })
+  const format = (n) => `${formatter.format(n)}${suffix}`
 
   useGSAP(
     () => {

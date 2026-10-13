@@ -15,12 +15,12 @@ export default function BookingCTA() {
       <div className={`container on-dark ${styles.content}`}>
         <p className="eyebrow">Limited dates</p>
         <SplitReveal as="h2" id="cta-title" className="display-lg">
-          Now booking <em>{site.bookingYear}</em> weddings
+          Now booking <em>{site.bookingYear}</em>
         </SplitReveal>
         <Reveal className={styles.body}>
           <p className={styles.text}>
-            We take on a limited number of celebrations each year, so every couple has our full attention — from the
-            first call to the final album.
+            Weddings, ceremonies, portraits and brand shoots. We keep our calendar small so every client has our full
+            attention — from the first call to the final delivery.
           </p>
           <div className={styles.actions}>
             <TransitionLink to="/booking" className="btn btn--light">

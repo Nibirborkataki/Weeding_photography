@@ -1,7 +1,8 @@
 import Hero from '../sections/home/Hero'
 import Intro from '../sections/home/Intro'
+import ServicesOverview from '../sections/home/ServicesOverview'
+import AcademyTeaser from '../sections/home/AcademyTeaser'
 import FeaturedStories from '../sections/home/FeaturedStories'
-import ServicesPreview from '../sections/home/ServicesPreview'
 import Process from '../sections/home/Process'
 import Testimonials from '../sections/home/Testimonials'
 import ReviewSection from '../sections/ReviewSection'
@@ -18,9 +19,10 @@ export default function Home() {
     <>
       <Hero />
       <Intro />
+      <ServicesOverview />
+      <AcademyTeaser />
       <FeaturedStories />
-      <Marquee />
-      <ServicesPreview />
+      <Marquee words={['Weddings', 'Rituals', 'Portraits', 'Campaigns']} />
       <Process />
       <Testimonials reviews={reviews} />
       <ReviewSection reviews={reviews} onSubmit={add} />

@@ -3,6 +3,7 @@ import * as auth from './authService'
 import { createBooking, listBookings } from './bookingService'
 import { addReview, listReviews, summarizeReviews } from './reviewService'
 import { sendMessage } from './contactService'
+import { createEnquiry } from './academyService'
 import { seedReviews } from '../data/reviews'
 import { estimateTotal } from '../data/packages'
 
@@ -40,23 +41,60 @@ describe('authService (mock)', () => {
 
 describe('bookingService (mock)', () => {
   const booking = {
+    serviceId: 'weddings',
+    occasion: 'Multi-day wedding',
     date: '2099-02-14',
     venue: 'Taj Lake Palace, Udaipur',
-    guests: '200-400',
+    guests: '150-300',
     packageId: 'signature',
     addOns: ['drone'],
-    partnerOne: 'Asha',
-    partnerTwo: 'Vikram',
+    name: 'Asha',
+    partnerName: 'Vikram',
     email: 'asha@example.com',
     phone: '+91 98765 43210',
   }
 
   it('creates a booking with a reference and estimated total', async () => {
     const created = await createBooking(booking)
-    expect(created.reference).toMatch(/^AUR-[A-Z2-9]{6}$/)
+    expect(created.reference).toMatch(/^PSS-[A-Z2-9]{6}$/)
     expect(created.status).toBe('pending')
     expect(created.estimatedTotal).toBe(estimateTotal('signature', ['drone']))
     expect(await listBookings()).toHaveLength(1)
+  })
+
+  it('handles non-wedding services and drops add-ons from other services', async () => {
+    const created = await createBooking({
+      serviceId: 'ceremonies',
+      occasion: 'Annaprashan (rice ceremony)',
+      date: '2099-03-01',
+      venue: 'Home, Kolkata',
+      guests: 'under-50',
+      packageId: 'celebration',
+      addOns: ['highlight-film', 'same-day-edit'],
+      name: 'Sutapa',
+      email: 's@example.com',
+      phone: '98765 43210',
+    })
+    expect(created.addOns).toEqual(['highlight-film'])
+    expect(created.partnerName).toBe('')
+    expect(created.estimatedTotal).toBe(32000 + 12000)
+  })
+
+  it('leaves the total open for quoted packages', async () => {
+    const created = await createBooking({
+      serviceId: 'commercial',
+      occasion: 'Brand campaign',
+      date: '2099-04-01',
+      venue: 'Studio',
+      packageId: 'campaign',
+      name: 'Riya',
+      company: 'Acme Foods',
+      email: 'r@example.com',
+      phone: '98765 43210',
+    })
+    expect(created.estimatedTotal).toBeNull()
+    expect(created.guests).toBe('')
+    expect(created.company).toBe('Acme Foods')
   })
 
   it('refuses incomplete bookings', async () => {
@@ -85,5 +123,30 @@ describe('contactService (mock)', () => {
     await expect(sendMessage({})).rejects.toThrow()
     const sent = await sendMessage({ name: 'A', email: 'a@b.co', subject: 'general', message: 'Hello, we love your work!' })
     expect(sent.id).toBeDefined()
+  })
+})
+
+describe('academyService (mock)', () => {
+  const enquiry = { name: 'Riya', email: 'riya@example.com', phone: '98765 43210' }
+
+  it('records a course enquiry with the fee for the chosen mode', async () => {
+    const saved = await createEnquiry({ ...enquiry, interest: 'course:foundations', mode: 'online', batchId: 'foundations-nov-online' })
+    expect(saved.reference).toMatch(/^PSA-[A-Z2-9]{6}$/)
+    expect(saved).toMatchObject({ itemName: 'Foundations', mode: 'online', fee: 9999, total: 9999, batchId: 'foundations-nov-online' })
+  })
+
+  it('applies a valid redeem code and rejects an invalid one', async () => {
+    const today = new Date(2026, 9, 13)
+    const saved = await createEnquiry({ ...enquiry, interest: 'workshop:lightroom', redeemCode: 'workshop20' }, today)
+    expect(saved).toMatchObject({ redeemCode: 'WORKSHOP20', fee: 3499, discount: 700, total: 2799, mode: 'online' })
+    await expect(createEnquiry({ ...enquiry, interest: 'workshop:lightroom', redeemCode: 'FIRSTFRAME' }, today)).rejects.toMatchObject({
+      fieldErrors: { redeemCode: expect.stringMatching(/courses only/) },
+    })
+  })
+
+  it('needs a learning mode for courses, but not for "not sure yet"', async () => {
+    await expect(createEnquiry({ ...enquiry, interest: 'course:wedding-pro' })).rejects.toMatchObject({ fieldErrors: { mode: expect.any(String) } })
+    const saved = await createEnquiry({ ...enquiry, interest: 'undecided' })
+    expect(saved).toMatchObject({ kind: 'undecided', fee: null, total: null })
   })
 })

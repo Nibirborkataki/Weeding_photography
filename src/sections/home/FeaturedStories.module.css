@@ -40,6 +40,7 @@
 }
 
 .media {
+  position: relative;
   aspect-ratio: 4 / 5;
   overflow: hidden;
   background: var(--sand);
@@ -135,4 +136,20 @@
   .media img {
     transform: none;
   }
+}
+
+
+.type {
+  position: absolute;
+  left: 1rem;
+  bottom: 1rem;
+  padding: 0.35rem 0.8rem;
+  border-radius: 99px;
+  background: rgba(247, 243, 238, 0.88);
+  backdrop-filter: blur(6px);
+  font-size: 0.66rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--ink);
 }

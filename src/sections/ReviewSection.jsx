@@ -16,8 +16,8 @@ export default function ReviewSection({ reviews, onSubmit, alt = true }) {
           </SplitReveal>
           <Reveal>
             <p className="lead">
-              Were we part of your day? We’d love to hear how it felt — your words help future couples find us, and
-              they make our whole week.
+              Were we part of your wedding, ceremony or campaign? We’d love to hear how it felt — your words help
+              others find us, and they make our whole week.
             </p>
           </Reveal>
           {reviews.length > 0 && (

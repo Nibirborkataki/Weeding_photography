@@ -75,21 +75,21 @@ export default function Hero() {
       <div className={`container ${styles.inner}`}>
         <div className={styles.content}>
           <p className="eyebrow" data-hero-fade>
-            {site.tagline} · Est. {site.established}
+            {site.tagline}
           </p>
           <h1 id="hero-title" ref={titleRef} className={`display-xl ${styles.title}`}>
-            Every love story deserves to be told <em>beautifully.</em>
+            Moments worth keeping, told <em>beautifully.</em>
           </h1>
           <p className={`lead ${styles.lead}`} data-hero-fade>
-            Timeless, editorial wedding photography for couples who want to remember how it felt — not just how it
-            looked.
+            Wedding photography at heart — with the same eye for emotion at your family’s ceremonies, your portraits
+            and your brand’s campaigns.
           </p>
           <div className={styles.actions} data-hero-fade>
             <TransitionLink to="/booking" className="btn">
               Book your date <ArrowRight />
             </TransitionLink>
-            <TransitionLink to="/portfolio" className="link-arrow">
-              View portfolio <ArrowRight />
+            <TransitionLink to="/services" className="link-arrow">
+              Explore services <ArrowRight />
             </TransitionLink>
           </div>
         </div>
@@ -114,7 +114,7 @@ export default function Hero() {
       </div>
 
       <div className={styles.badge} data-hero-fade>
-        <RotatingBadge text={`Now booking ${site.bookingYear} · Weddings worldwide · `} />
+        <RotatingBadge text="Weddings · Ceremonies · Campaigns · " />
       </div>
     </section>
   )

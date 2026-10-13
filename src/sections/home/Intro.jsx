@@ -13,9 +13,9 @@ export default function Intro() {
         <div className={styles.statementRow}>
           <p className="eyebrow">Our philosophy</p>
           <ScrubText className={styles.statement}>
-            We believe the most beautiful wedding photographs aren’t posed — they’re felt. Quiet glances, unguarded
-            laughter, the hand that finds another in a crowd. We’re there for every bit of it, quietly and
-            beautifully.
+            We believe the most beautiful photographs aren’t posed — they’re felt. A bride’s quiet glance, a
+            grandmother’s blessing at a rice ceremony, the perfect light on a product. Whatever the occasion, we’re
+            there for every bit of it, quietly and beautifully.
           </ScrubText>
         </div>
 
@@ -25,8 +25,8 @@ export default function Intro() {
             <ParallaxImage className={styles.wide} {...images.introDetail} />
             <Reveal className={styles.caption}>
               <p className="muted">
-                Candid storytelling, fine-art portraits and heirloom albums — crafted with care for couples in India
-                and around the world.
+                Weddings are our heart. Family ceremonies, portraits and brand campaigns get the same care — candid
+                storytelling, beautiful light and images made to last.
               </p>
               <TransitionLink to="/about" className="link-arrow">
                 Our story <ArrowRight />

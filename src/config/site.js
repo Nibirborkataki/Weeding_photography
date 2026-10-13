@@ -1,9 +1,13 @@
 // Brand + business details in one place. Everything here is placeholder
 // content — swap in the real studio details before launch.
 export const site = {
-  name: 'Aurelia',
-  fullName: 'Aurelia Studio',
-  tagline: 'Wedding Photography',
+  name: 'Prism Snap',
+  fullName: 'Prism Snap Studio',
+  // Weddings are the specialty; ceremonies, commercial and portrait work round it out.
+  tagline: 'Weddings · Ceremonies · Commercial',
+  description: 'Wedding, ceremony & commercial photography',
+  // Client logo: white artwork on a transparent 1080×1080 canvas.
+  logo: '/brand/prism-snap-studio-logo.png',
   established: 2014,
   email: 'hello@aureliastudio.com',
   phone: '+91 98765 43210',
@@ -17,15 +21,16 @@ export const site = {
   ],
   stats: [
     { value: 450, suffix: '+', label: 'Weddings captured' },
-    { value: 12, suffix: '', label: 'Countries travelled' },
+    { value: 300, suffix: '+', label: 'Ceremonies & family events' },
+    { value: 120, suffix: '+', label: 'Brand & product shoots' },
     { value: 10, suffix: '+', label: 'Years of storytelling' },
-    { value: 4.9, suffix: '', label: 'Average client rating', decimals: 1 },
   ],
   currency: { code: 'INR', locale: 'en-IN' },
 }
 
 export const navLinks = [
   { to: '/', label: 'Home' },
+  { to: '/academy', label: 'Academy' },
   { to: '/portfolio', label: 'Portfolio' },
   { to: '/services', label: 'Services' },
   { to: '/about', label: 'About' },
@@ -40,3 +45,6 @@ const priceFormatter = new Intl.NumberFormat(site.currency.locale, {
 })
 
 export const formatPrice = (amount) => priceFormatter.format(amount)
+
+/** Price label for packages; `null` prices are quoted per project. */
+export const formatPackagePrice = (amount) => (amount == null ? 'Custom quote' : formatPrice(amount))

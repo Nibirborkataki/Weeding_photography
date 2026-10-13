@@ -1,0 +1,351 @@
+.layout {
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: start;
+}
+
+.intro {
+  display: grid;
+  gap: 1.4rem;
+  position: sticky;
+  top: calc(var(--nav-h) + 2rem);
+}
+
+.introBody {
+  display: grid;
+  gap: 2rem;
+}
+
+.contact {
+  display: grid;
+  gap: 1rem;
+  padding-top: 1.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.contact li {
+  display: grid;
+  gap: 0.15rem;
+  font-size: 1rem;
+}
+
+.contact span {
+  font-size: 0.68rem;
+  font-weight: 600;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--ink-mute);
+}
+
+.contact a {
+  justify-self: start;
+  font-family: var(--font-display);
+  font-size: 1.45rem;
+  line-height: 1.2;
+}
+
+/* Promo "ticket" — the side notches are circles in the section background colour */
+.ticket {
+  position: relative;
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 0.2rem 1rem;
+  align-items: center;
+  padding: 1.3rem 1.6rem;
+  background: var(--ink);
+  color: var(--on-dark);
+}
+
+.ticket::before,
+.ticket::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  width: 1.4rem;
+  height: 1.4rem;
+  border-radius: 50%;
+  background: var(--ivory-2);
+  transform: translateY(-50%);
+}
+
+.ticket::before {
+  left: -0.7rem;
+}
+
+.ticket::after {
+  right: -0.7rem;
+}
+
+.ticketLabel {
+  grid-column: 1;
+  font-size: 0.64rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+}
+
+.ticketCode {
+  grid-column: 1;
+  font-family: var(--font-brand);
+  font-size: 1.5rem;
+  letter-spacing: 0.18em;
+}
+
+.ticketText {
+  grid-column: 1;
+  font-size: 0.85rem;
+  color: var(--on-dark-soft);
+}
+
+.ticketBtn {
+  grid-column: 2;
+  grid-row: 1 / span 3;
+  padding: 0.7rem 1.1rem;
+  border: 1px dashed rgba(216, 194, 155, 0.6);
+  font-size: 0.7rem;
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--gold-soft);
+  transition: background 0.4s var(--ease-out), color 0.4s var(--ease-out);
+}
+
+.ticketBtn:hover:not(:disabled) {
+  background: var(--gold-soft);
+  color: var(--ink);
+}
+
+.ticketBtn:disabled {
+  opacity: 0.5;
+  cursor: default;
+}
+
+/* Form card */
+.card {
+  padding: clamp(1.75rem, 4vw, 3rem);
+  background: var(--paper);
+  border: 1px solid var(--line);
+}
+
+.form {
+  display: grid;
+  gap: 2rem;
+}
+
+.fixedMode {
+  padding: 0.9rem 1.1rem;
+  background: var(--ivory-2);
+  font-size: 0.9rem;
+  color: var(--ink-soft);
+}
+
+.fixedMode strong {
+  color: var(--ink);
+}
+
+.codeRow {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: 0.5rem 1rem;
+}
+
+.codeField input {
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+}
+
+.codeField input::placeholder {
+  text-transform: none;
+  letter-spacing: normal;
+}
+
+.applyBtn {
+  min-height: 2.9rem;
+  padding: 0 1.4rem;
+}
+
+.codeRow > p {
+  grid-column: 1 / -1;
+}
+
+.codeOk {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.82rem;
+  font-weight: 600;
+  color: var(--success);
+}
+
+.price {
+  padding: 1.3rem 1.4rem;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+}
+
+.price dl {
+  display: grid;
+  gap: 0.6rem;
+  margin: 0;
+}
+
+.price dl > div {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+}
+
+.price dt {
+  display: grid;
+  font-size: 0.92rem;
+}
+
+.price dt small {
+  font-size: 0.72rem;
+  color: var(--ink-mute);
+}
+
+.price dd {
+  margin: 0;
+  font-family: var(--font-display);
+  font-size: 1.3rem;
+  white-space: nowrap;
+}
+
+.discountRow dt,
+.discountRow dd {
+  color: var(--success);
+}
+
+.totalRow {
+  padding-top: 0.7rem;
+  border-top: 1px solid var(--line-strong);
+}
+
+.totalRow dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+}
+
+.totalRow dd {
+  font-size: 1.9rem;
+}
+
+.fine {
+  margin-top: -1rem;
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--ink-mute);
+}
+
+/* Success */
+.success {
+  display: grid;
+  gap: 1.2rem;
+  justify-items: start;
+  animation: fade-up 0.8s var(--ease-out) both;
+}
+
+.successIcon {
+  display: grid;
+  place-items: center;
+  width: 3.4rem;
+  height: 3.4rem;
+  border-radius: 50%;
+  background: var(--ink);
+  color: var(--gold-soft);
+}
+
+.successTitle {
+  font-family: var(--font-display);
+  font-size: clamp(2.2rem, 3.4vw, 3rem);
+  line-height: 1.1;
+}
+
+.successTitle em {
+  font-style: italic;
+  color: var(--gold-ink);
+}
+
+.summary {
+  display: grid;
+  gap: 0.6rem;
+  width: 100%;
+  margin: 0;
+  padding: 1.2rem 1.3rem;
+  background: var(--ivory);
+  border: 1px solid var(--line);
+}
+
+.summary > div {
+  display: flex;
+  justify-content: space-between;
+  gap: 1rem;
+  font-size: 0.9rem;
+}
+
+.summary dt {
+  color: var(--ink-soft);
+}
+
+.summary dd {
+  margin: 0;
+  text-align: right;
+}
+
+.summaryTotal {
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--line);
+}
+
+.summaryTotal dd {
+  font-family: var(--font-display);
+  font-size: 1.4rem;
+}
+
+.reference {
+  padding: 0.7rem 1rem;
+  background: var(--ivory-2);
+  font-size: 0.85rem;
+}
+
+.reference strong {
+  letter-spacing: 0.12em;
+}
+
+@keyframes fade-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+}
+
+@media (max-width: 960px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .intro {
+    position: static;
+  }
+}
+
+@media (max-width: 480px) {
+  .ticket {
+    grid-template-columns: 1fr;
+  }
+
+  .ticketBtn {
+    grid-column: 1;
+    grid-row: auto;
+    justify-self: start;
+    margin-top: 0.6rem;
+  }
+}

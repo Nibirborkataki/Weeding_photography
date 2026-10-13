@@ -102,7 +102,7 @@
 
 .steps {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   gap: 0.5rem;
   margin: 0;
   padding: 0;
@@ -192,6 +192,58 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
   color: var(--ink-soft);
+}
+
+.serviceOptions {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.8rem;
+}
+
+.serviceOption {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.8rem 1.1rem 0.8rem 0.8rem;
+  border: 1px solid var(--line-strong);
+  background: var(--paper);
+  cursor: pointer;
+  transition: border-color 0.4s, box-shadow 0.4s;
+}
+
+.serviceOption:hover {
+  border-color: var(--ink);
+}
+
+.serviceOption:has(input:focus-visible) {
+  outline: 2px solid var(--gold-deep);
+  outline-offset: 2px;
+}
+
+.serviceThumb {
+  width: 4.2rem;
+  height: 4.2rem;
+  overflow: hidden;
+  background: var(--sand);
+}
+
+.serviceThumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.serviceText {
+  display: grid;
+  gap: 0.25rem;
+  min-width: 0;
+}
+
+.serviceOption .packageName {
+  font-size: 1.35rem;
+  flex-wrap: wrap;
 }
 
 .packageOptions {
@@ -390,6 +442,12 @@
 
   .summaryCard {
     margin: 0;
+  }
+}
+
+@media (max-width: 760px) {
+  .serviceOptions {
+    grid-template-columns: 1fr;
   }
 }
 

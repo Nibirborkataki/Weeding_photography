@@ -23,7 +23,7 @@ export default function About() {
             We photograph <em>feelings</em>, not poses
           </>
         }
-        intro={`${site.fullName} is a small team of storytellers who have spent over a decade documenting weddings with patience, warmth and an eye for light.`}
+        intro={`${site.fullName} is a small team of storytellers. Weddings are our specialty — and for over a decade families and brands have trusted us with their ceremonies, portraits and campaigns too.`}
         image={images.aboutHeader}
       />
 
@@ -47,13 +47,13 @@ export default function About() {
                 big ones.
               </p>
               <p>
-                Since then we’ve followed couples through palace courtyards, monsoon mehendis, alpine elopements and
-                backyard celebrations. The places change; what we look for doesn’t. Honest emotion, beautiful light
-                and the people who matter most.
+                Since then we’ve followed couples through palace courtyards and monsoon mehendis — and the same
+                families have invited us back for their babies’ rice ceremonies, mundans and housewarmings. Along the
+                way, local jewellers, restaurants and fashion labels asked us to bring that warmth to their brands.
               </p>
               <p>
-                We keep our calendar intentionally small so that every couple gets our full attention, from the
-                first conversation to the album you’ll one day show your grandchildren.
+                The occasions change; what we look for doesn’t. Honest emotion, beautiful light and the people who
+                matter most. We keep our calendar intentionally small so every client gets our full attention.
               </p>
             </Reveal>
             <ParallaxImage className={styles.detailImage} {...images.aboutDetail} />

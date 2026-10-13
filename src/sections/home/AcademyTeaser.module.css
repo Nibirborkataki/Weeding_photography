@@ -1,0 +1,105 @@
+.teaser {
+  overflow: hidden;
+}
+
+.layout {
+  display: grid;
+  grid-template-columns: 5fr 6fr;
+  gap: clamp(3rem, 7vw, 7rem);
+  align-items: center;
+}
+
+.art {
+  position: relative;
+  padding-bottom: 4rem;
+}
+
+.main {
+  width: 80%;
+  aspect-ratio: 4 / 5;
+}
+
+.inset {
+  position: absolute !important;
+  right: 0;
+  bottom: 0;
+  width: 48%;
+  aspect-ratio: 4 / 5;
+  border: 8px solid var(--ink);
+}
+
+.text {
+  display: grid;
+  gap: 1.4rem;
+}
+
+.body {
+  display: grid;
+  gap: 2rem;
+}
+
+.courses {
+  border-top: 1px solid var(--line-dark);
+}
+
+.courses li {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  gap: 1rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--line-dark);
+}
+
+.courseName {
+  display: grid;
+  gap: 0.1rem;
+  font-family: var(--font-display);
+  font-size: 1.5rem;
+  line-height: 1.15;
+}
+
+.courseName small {
+  font-family: var(--font-body);
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--on-dark-soft);
+}
+
+.from {
+  font-family: var(--font-display);
+  font-size: 1.2rem;
+  white-space: nowrap;
+  color: var(--gold-soft);
+}
+
+.actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 1.2rem 1.8rem;
+}
+
+.code {
+  font-size: 0.82rem;
+  color: var(--on-dark-soft);
+}
+
+.code strong {
+  margin-inline: 0.2rem;
+  padding: 0.15rem 0.55rem;
+  border: 1px dashed rgba(216, 194, 155, 0.6);
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--gold-soft);
+}
+
+@media (max-width: 900px) {
+  .layout {
+    grid-template-columns: 1fr;
+  }
+
+  .art {
+    max-width: 30rem;
+  }
+}

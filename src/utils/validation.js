@@ -1,6 +1,8 @@
 // Pure validators shared by forms and services. Each returns an object of
 // { fieldName: message }; an empty object means the input is valid.
 
+import { getPackage } from '../data/packages'
+
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/
 const PHONE_RE = /^[+()\-\s\d]{7,20}$/
 
@@ -73,22 +75,34 @@ export function validateContact({ name, email, subject, message } = {}) {
   return errors
 }
 
-export const BOOKING_STEPS = ['Date & venue', 'Collection', 'Your details', 'Confirm']
+export const BOOKING_STEPS = ['Occasion', 'Date & venue', 'Package', 'Your details', 'Confirm']
+
+const SERVICE_IDS = ['weddings', 'ceremonies', 'commercial', 'portraits']
+
+/** Guest counts only matter for celebrations, not studio or portrait shoots. */
+export const needsGuestCount = (serviceId) => serviceId === 'weddings' || serviceId === 'ceremonies'
+/** Weddings ask for both partners’ names. */
+export const needsPartnerName = (serviceId) => serviceId === 'weddings'
 
 export function validateBookingStep(step, data = {}, today = new Date()) {
   const errors = {}
   if (step === 0) {
-    if (isBlank(data.date)) errors.date = 'Please choose your wedding date.'
-    else if (data.date <= toISODate(today)) errors.date = 'Please choose a date in the future.'
-    if (isBlank(data.venue)) errors.venue = 'Where is the celebration?'
-    if (isBlank(data.guests)) errors.guests = 'Please pick a guest count.'
+    if (!SERVICE_IDS.includes(data.serviceId)) errors.serviceId = 'Please choose what we’ll be photographing.'
+    if (isBlank(data.occasion)) errors.occasion = 'Please pick the occasion.'
   }
   if (step === 1) {
-    if (isBlank(data.packageId)) errors.packageId = 'Please choose a collection.'
+    if (isBlank(data.date)) errors.date = 'Please choose a date.'
+    else if (data.date <= toISODate(today)) errors.date = 'Please choose a date in the future.'
+    if (isBlank(data.venue)) errors.venue = 'Where will the shoot take place?'
+    if (needsGuestCount(data.serviceId) && isBlank(data.guests)) errors.guests = 'Please pick a guest count.'
   }
   if (step === 2) {
-    if (isBlank(data.partnerOne)) errors.partnerOne = 'Please add your name.'
-    if (isBlank(data.partnerTwo)) errors.partnerTwo = 'Please add your partner’s name.'
+    const pkg = getPackage(data.packageId)
+    if (!pkg || pkg.serviceId !== data.serviceId) errors.packageId = 'Please choose a package.'
+  }
+  if (step === 3) {
+    if (isBlank(data.name)) errors.name = 'Please add your name.'
+    if (needsPartnerName(data.serviceId) && isBlank(data.partnerName)) errors.partnerName = 'Please add your partner’s name.'
     checkEmail(errors, data.email)
     if (isBlank(data.phone)) errors.phone = 'Please add a phone number.'
     else if (!PHONE_RE.test(String(data.phone).trim())) errors.phone = 'That phone number doesn’t look right.'
@@ -97,9 +111,17 @@ export function validateBookingStep(step, data = {}, today = new Date()) {
 }
 
 export function validateBooking(data, today = new Date()) {
-  return {
-    ...validateBookingStep(0, data, today),
-    ...validateBookingStep(1, data, today),
-    ...validateBookingStep(2, data, today),
-  }
+  return [0, 1, 2, 3].reduce((all, step) => ({ ...all, ...validateBookingStep(step, data, today) }), {})
+}
+
+/** Academy enquiry: who you are, what you're interested in and (for courses) how you'd like to learn. */
+export function validateAcademyEnquiry({ name, email, phone, interest, mode } = {}) {
+  const errors = {}
+  if (isBlank(name)) errors.name = 'Please add your name.'
+  checkEmail(errors, email)
+  if (isBlank(phone)) errors.phone = 'Please add a phone number.'
+  else if (!PHONE_RE.test(String(phone).trim())) errors.phone = 'That phone number doesn’t look right.'
+  if (isBlank(interest)) errors.interest = 'Please choose what you’d like to learn.'
+  else if (String(interest).startsWith('course:') && isBlank(mode)) errors.mode = 'Choose in-studio or live online.'
+  return errors
 }

@@ -10,10 +10,18 @@ import { ArrowLeft, ArrowRight, Check } from '../components/ui/Icons'
 import { useAuth } from '../context/AuthContext'
 import { useToast } from '../context/ToastContext'
 import { createBooking } from '../services/bookingService'
-import { addOns, estimateTotal, getPackage, packages } from '../data/packages'
+import { addOns, addOnsFor, estimateTotal, getPackage, packagesFor } from '../data/packages'
+import { services, getService } from '../data/services'
 import { images } from '../data/images'
-import { formatPrice } from '../config/site'
-import { BOOKING_STEPS, hasErrors, toISODate, validateBookingStep } from '../utils/validation'
+import { formatPackagePrice, formatPrice } from '../config/site'
+import {
+  BOOKING_STEPS,
+  hasErrors,
+  needsGuestCount,
+  needsPartnerName,
+  toISODate,
+  validateBookingStep,
+} from '../utils/validation'
 import { usePageTitle } from '../hooks/usePageTitle'
 import styles from './Booking.module.css'
 
@@ -25,6 +33,14 @@ const GUEST_OPTIONS = [
   { value: '500-plus', label: '500+ guests' },
 ]
 
+// Wording that changes with the kind of shoot.
+const COPY = {
+  weddings: { venue: 'e.g. Taj Lake Palace, Udaipur', message: 'Events, rituals, the vibe you’re dreaming of…' },
+  ceremonies: { venue: 'e.g. Home in Salt Lake, Kolkata', message: 'Which rituals, timings, family size…' },
+  commercial: { venue: 'Our studio, your store or a location', message: 'Products, number of looks, where the images will be used…' },
+  portraits: { venue: 'At home, outdoors or in the studio', message: 'Who’s in the photos, the mood you’d love…' },
+}
+
 const longDate = new Intl.DateTimeFormat('en-GB', { weekday: 'long', day: 'numeric', month: 'long', year: 'numeric' })
 const formatDate = (iso) => (iso ? longDate.format(new Date(`${iso}T00:00:00`)) : '—')
 
@@ -34,26 +50,54 @@ function tomorrowISO() {
   return toISODate(d)
 }
 
+function initialData(params, user) {
+  const presetPackage = getPackage(params.get('package'))
+  const serviceId = presetPackage?.serviceId ?? getService(params.get('service'))?.id ?? ''
+  return {
+    serviceId,
+    occasion: '',
+    date: '',
+    venue: '',
+    guests: '',
+    packageId: presetPackage?.id ?? '',
+    addOns: [],
+    name: user?.name ?? '',
+    partnerName: '',
+    company: '',
+    email: user?.email ?? '',
+    phone: '',
+    message: '',
+  }
+}
+
 function Summary({ data }) {
+  const service = getService(data.serviceId)
   const pkg = getPackage(data.packageId)
   const chosenAddOns = addOns.filter((a) => data.addOns.includes(a.id))
   const guests = GUEST_OPTIONS.find((g) => g.value === data.guests)?.label
+  const total = estimateTotal(data.packageId, data.addOns)
   return (
     <dl className={styles.summaryList}>
+      <div>
+        <dt>Occasion</dt>
+        <dd>{service ? [service.shortName ?? service.name, data.occasion].filter(Boolean).join(' · ') : '—'}</dd>
+      </div>
       <div>
         <dt>Date</dt>
         <dd>{formatDate(data.date)}</dd>
       </div>
       <div>
-        <dt>Venue</dt>
+        <dt>Location</dt>
         <dd>{data.venue || '—'}</dd>
       </div>
+      {needsGuestCount(data.serviceId) && (
+        <div>
+          <dt>Guests</dt>
+          <dd>{guests ?? '—'}</dd>
+        </div>
+      )}
       <div>
-        <dt>Guests</dt>
-        <dd>{guests ?? '—'}</dd>
-      </div>
-      <div>
-        <dt>Collection</dt>
+        <dt>Package</dt>
         <dd>{pkg ? pkg.name : '—'}</dd>
       </div>
       {chosenAddOns.length > 0 && (
@@ -63,39 +107,31 @@ function Summary({ data }) {
         </div>
       )}
       <div className={styles.total}>
-        <dt>Estimated from</dt>
-        <dd>{pkg ? formatPrice(estimateTotal(data.packageId, data.addOns)) : '—'}</dd>
+        <dt>{pkg && total == null ? 'Pricing' : 'Estimated from'}</dt>
+        <dd>{pkg ? (total == null ? 'Custom quote' : formatPrice(total)) : '—'}</dd>
       </div>
     </dl>
   )
 }
 
 export default function Booking() {
-  usePageTitle('Book your date')
+  usePageTitle('Book a shoot')
   const { user } = useAuth()
   const toast = useToast()
   const [params] = useSearchParams()
-  const presetPackage = packages.some((p) => p.id === params.get('package')) ? params.get('package') : ''
 
   const [step, setStep] = useState(0)
-  const [data, setData] = useState(() => ({
-    date: '',
-    venue: '',
-    guests: '',
-    packageId: presetPackage,
-    addOns: [],
-    partnerOne: user?.name ?? '',
-    partnerTwo: '',
-    email: user?.email ?? '',
-    phone: '',
-    message: '',
-  }))
+  const [data, setData] = useState(() => initialData(params, user))
   const [errors, setErrors] = useState({})
   const [submitting, setSubmitting] = useState(false)
   const [booking, setBooking] = useState(null)
   const panelRef = useRef(null)
   const formRef = useRef(null)
   const minDate = useMemo(tomorrowISO, [])
+
+  const service = getService(data.serviceId)
+  const copy = COPY[data.serviceId] ?? COPY.weddings
+  const asideImage = service?.image ?? images.bookingSide
 
   useGSAP(
     () => {
@@ -105,10 +141,22 @@ export default function Booking() {
     { dependencies: [step, !!booking] },
   )
 
+  const clearError = (field) => setErrors(({ [field]: _removed, ...rest }) => rest)
+
   const set = (field) => (e) => {
     const value = e.target.value
     setData((d) => ({ ...d, [field]: value }))
-    setErrors(({ [field]: _removed, ...rest }) => rest)
+    clearError(field)
+  }
+
+  // Switching service resets the choices that only make sense for the old one.
+  const chooseService = (serviceId) => {
+    setData((d) => {
+      if (d.serviceId === serviceId) return d
+      const keepPackage = getPackage(d.packageId)?.serviceId === serviceId
+      return { ...d, serviceId, occasion: '', packageId: keepPackage ? d.packageId : '', addOns: [] }
+    })
+    clearError('serviceId')
   }
 
   const toggleAddOn = (id) =>
@@ -156,9 +204,8 @@ export default function Booking() {
       toast.success('Booking request sent — we’ll be in touch within 24 hours.')
       scrollToForm()
     } catch (err) {
-      const fieldErrors = err.fieldErrors ?? {}
-      setErrors(fieldErrors)
-      const firstBadStep = [0, 1, 2].find((s) => hasErrors(validateBookingStep(s, data)))
+      setErrors(err.fieldErrors ?? {})
+      const firstBadStep = [0, 1, 2, 3].find((s) => hasErrors(validateBookingStep(s, data)))
       if (firstBadStep !== undefined) setStep(firstBadStep)
       toast.error(err.message)
     } finally {
@@ -166,16 +213,18 @@ export default function Booking() {
     }
   }
 
+  const bookingNames = booking ? [booking.name, booking.partnerName].filter(Boolean) : []
+
   return (
     <div className={styles.page}>
       <div className={`container ${styles.layout}`}>
         <aside className={styles.aside}>
           <div className={styles.asideInner}>
             <div className={styles.asideImage}>
-              <img src={images.bookingSide.src} alt={images.bookingSide.alt} />
+              <img key={asideImage.src} src={asideImage.src} alt={asideImage.alt} />
             </div>
             <div className={styles.summaryCard}>
-              <p className={styles.summaryTitle}>Your celebration</p>
+              <p className={styles.summaryTitle}>Your booking</p>
               <Summary data={data} />
             </div>
           </div>
@@ -191,8 +240,8 @@ export default function Booking() {
             </SplitReveal>
             <Reveal immediate delay={0.7}>
               <p className="lead">
-                Four short steps. No payment now — we’ll confirm availability and send a tailored proposal within 24
-                hours.
+                Weddings, ceremonies, portraits or a brand shoot — a few short steps and no payment now. We’ll confirm
+                availability and send a tailored proposal within 24 hours.
               </p>
             </Reveal>
           </header>
@@ -203,18 +252,24 @@ export default function Booking() {
                 <Check size={28} />
               </span>
               <h2 className="display-sm">
-                Thank you, <em>{booking.partnerOne}</em> &amp; <em>{booking.partnerTwo}</em>
+                Thank you,{' '}
+                {bookingNames.map((n, i) => (
+                  <span key={n}>
+                    {i > 0 && ' & '}
+                    <em>{n}</em>
+                  </span>
+                ))}
               </h2>
               <p className="muted">
-                Your request for <strong>{formatDate(booking.date)}</strong> is in. We’ll reply to{' '}
-                <strong>{booking.email}</strong> shortly.
+                Your request for <strong>{booking.occasion}</strong> on <strong>{formatDate(booking.date)}</strong> is
+                in. We’ll reply to <strong>{booking.email}</strong> shortly.
               </p>
               <p className={styles.reference}>
                 Reference <strong>{booking.reference}</strong>
               </p>
               <ol className={styles.nextSteps}>
                 <li>We check availability and reply within 24 hours.</li>
-                <li>A relaxed planning call to get to know you both.</li>
+                <li>A relaxed planning call to understand your occasion or brief.</li>
                 <li>Sign the agreement and a 30% retainer secures your date.</li>
               </ol>
               <div className={styles.successActions}>
@@ -246,22 +301,78 @@ export default function Booking() {
               <div ref={panelRef} className={styles.panel}>
                 {step === 0 && (
                   <fieldset className={styles.fieldset}>
-                    <legend className={styles.legend}>When &amp; where?</legend>
-                    <div className="form-grid form-grid--2">
-                      <Field label="Wedding date" type="date" min={minDate} value={data.date} onChange={set('date')} error={errors.date} />
+                    <legend className={styles.legend}>What are we photographing?</legend>
+                    <div className={styles.serviceOptions} role="radiogroup">
+                      {services.map((s) => (
+                        <label key={s.id} className={`${styles.serviceOption} ${data.serviceId === s.id ? styles.selected : ''}`}>
+                          <input
+                            type="radio"
+                            name="serviceId"
+                            value={s.id}
+                            checked={data.serviceId === s.id}
+                            onChange={() => chooseService(s.id)}
+                            className="visually-hidden"
+                            aria-invalid={errors.serviceId ? true : undefined}
+                          />
+                          <span className={styles.serviceThumb}>
+                            <img src={s.image.src} alt="" loading="lazy" />
+                          </span>
+                          <span className={styles.serviceText}>
+                            <span className={styles.packageName}>
+                              {s.name}
+                              {s.flagship && <span className={styles.tag}>Specialty</span>}
+                            </span>
+                            <span className={styles.packageMeta}>{s.tagline}</span>
+                          </span>
+                          <span className={styles.radio} aria-hidden="true" />
+                        </label>
+                      ))}
+                    </div>
+                    {errors.serviceId && <p className="field__error">{errors.serviceId}</p>}
+
+                    {service && (
                       <Field
                         as="select"
-                        label="Guest count"
-                        placeholder="Select guest count"
-                        options={GUEST_OPTIONS}
-                        value={data.guests}
-                        onChange={set('guests')}
-                        error={errors.guests}
+                        label="Occasion"
+                        placeholder="Choose the occasion"
+                        options={service.occasions.map((o) => ({ value: o, label: o }))}
+                        value={data.occasion}
+                        onChange={set('occasion')}
+                        error={errors.occasion}
                       />
+                    )}
+                  </fieldset>
+                )}
+
+                {step === 1 && (
+                  <fieldset className={styles.fieldset}>
+                    <legend className={styles.legend}>When &amp; where?</legend>
+                    <div className="form-grid form-grid--2">
+                      <Field
+                        label={data.serviceId === 'commercial' ? 'Preferred shoot date' : 'Date'}
+                        type="date"
+                        min={minDate}
+                        value={data.date}
+                        onChange={set('date')}
+                        error={errors.date}
+                      />
+                      {needsGuestCount(data.serviceId) ? (
+                        <Field
+                          as="select"
+                          label="Guest count"
+                          placeholder="Select guest count"
+                          options={GUEST_OPTIONS}
+                          value={data.guests}
+                          onChange={set('guests')}
+                          error={errors.guests}
+                        />
+                      ) : (
+                        <div />
+                      )}
                       <Field
                         className="span-2"
-                        label="Venue or city"
-                        placeholder="e.g. Taj Lake Palace, Udaipur"
+                        label="Venue or location"
+                        placeholder={copy.venue}
                         value={data.venue}
                         onChange={set('venue')}
                         error={errors.venue}
@@ -270,11 +381,11 @@ export default function Booking() {
                   </fieldset>
                 )}
 
-                {step === 1 && (
+                {step === 2 && (
                   <fieldset className={styles.fieldset}>
-                    <legend className={styles.legend}>Choose your collection</legend>
-                    <div className={styles.packageOptions} role="radiogroup" aria-invalid={errors.packageId ? true : undefined}>
-                      {packages.map((p) => (
+                    <legend className={styles.legend}>Choose your package</legend>
+                    <div className={styles.packageOptions} role="radiogroup">
+                      {packagesFor(data.serviceId).map((p) => (
                         <label key={p.id} className={`${styles.packageOption} ${data.packageId === p.id ? styles.selected : ''}`}>
                           <input
                             type="radio"
@@ -293,7 +404,7 @@ export default function Booking() {
                             </span>
                             <span className={styles.packageMeta}>{p.coverage}</span>
                           </span>
-                          <span className={styles.packagePrice}>{formatPrice(p.price)}</span>
+                          <span className={styles.packagePrice}>{formatPackagePrice(p.price)}</span>
                         </label>
                       ))}
                     </div>
@@ -301,7 +412,7 @@ export default function Booking() {
 
                     <p className={styles.subLegend}>Add-ons (optional)</p>
                     <div className={styles.addOns}>
-                      {addOns.map((a) => (
+                      {addOnsFor(data.serviceId).map((a) => (
                         <label key={a.id} className={`checkbox ${styles.addOn}`}>
                           <input type="checkbox" checked={data.addOns.includes(a.id)} onChange={() => toggleAddOn(a.id)} />
                           <span>{a.name}</span>
@@ -312,20 +423,25 @@ export default function Booking() {
                   </fieldset>
                 )}
 
-                {step === 2 && (
+                {step === 3 && (
                   <fieldset className={styles.fieldset}>
-                    <legend className={styles.legend}>About you two</legend>
+                    <legend className={styles.legend}>About you</legend>
                     <div className="form-grid form-grid--2">
-                      <Field label="Your name" autoComplete="name" value={data.partnerOne} onChange={set('partnerOne')} error={errors.partnerOne} />
-                      <Field label="Partner’s name" value={data.partnerTwo} onChange={set('partnerTwo')} error={errors.partnerTwo} />
+                      <Field label="Your name" autoComplete="name" value={data.name} onChange={set('name')} error={errors.name} />
+                      {needsPartnerName(data.serviceId) && (
+                        <Field label="Partner’s name" value={data.partnerName} onChange={set('partnerName')} error={errors.partnerName} />
+                      )}
+                      {data.serviceId === 'commercial' && (
+                        <Field label="Brand / company" optional autoComplete="organization" value={data.company} onChange={set('company')} />
+                      )}
                       <Field label="Email" type="email" autoComplete="email" value={data.email} onChange={set('email')} error={errors.email} />
                       <Field label="Phone" type="tel" autoComplete="tel" placeholder="+91" value={data.phone} onChange={set('phone')} error={errors.phone} />
                       <Field
                         className="span-2"
                         as="textarea"
-                        label="Tell us about your plans"
+                        label="Tell us more"
                         optional
-                        placeholder="Events, rituals, the vibe you’re dreaming of…"
+                        placeholder={copy.message}
                         value={data.message}
                         onChange={set('message')}
                       />
@@ -333,18 +449,22 @@ export default function Booking() {
                   </fieldset>
                 )}
 
-                {step === 3 && (
+                {step === 4 && (
                   <div className={styles.fieldset}>
                     <p className={styles.legend}>Everything look right?</p>
                     <div className={styles.review}>
                       <Summary data={data} />
                       <dl className={styles.summaryList}>
                         <div>
-                          <dt>Couple</dt>
-                          <dd>
-                            {data.partnerOne} &amp; {data.partnerTwo}
-                          </dd>
+                          <dt>Name</dt>
+                          <dd>{[data.name, data.partnerName].filter(Boolean).join(' & ')}</dd>
                         </div>
+                        {data.company && (
+                          <div>
+                            <dt>Company</dt>
+                            <dd>{data.company}</dd>
+                          </div>
+                        )}
                         <div>
                           <dt>Email</dt>
                           <dd>{data.email}</dd>
@@ -356,8 +476,8 @@ export default function Booking() {
                       </dl>
                     </div>
                     <p className={styles.note}>
-                      By sending this request you’re not committing to anything — it simply lets us check our
-                      calendar for you.
+                      By sending this request you’re not committing to anything — it simply lets us check our calendar
+                      for you.
                     </p>
                   </div>
                 )}

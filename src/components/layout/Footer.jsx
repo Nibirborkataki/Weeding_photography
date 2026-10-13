@@ -1,4 +1,5 @@
 import { navLinks, site } from '../../config/site'
+import { services } from '../../data/services'
 import { smoothScrollTo } from '../../lib/smoothScroll'
 import { TransitionLink } from '../transition/PageTransition'
 import SplitReveal from '../motion/SplitReveal'
@@ -23,7 +24,8 @@ export default function Footer() {
         <div className={styles.grid}>
           <div className={styles.about}>
             <p>
-              Timeless, editorial wedding photography for couples who care about how it felt. {site.location}.
+              Wedding photography at heart — plus family ceremonies, portraits and commercial work, all told
+              beautifully. {site.location}.
             </p>
           </div>
 
@@ -42,6 +44,17 @@ export default function Footer() {
               </li>
             </ul>
           </nav>
+
+          <div>
+            <h3 className={styles.heading}>Services</h3>
+            <ul className={styles.list}>
+              {services.map((s) => (
+                <li key={s.id}>
+                  <TransitionLink to={`/services#${s.id}`}>{s.name}</TransitionLink>
+                </li>
+              ))}
+            </ul>
+          </div>
 
           <div>
             <h3 className={styles.heading}>Studio</h3>
@@ -70,8 +83,17 @@ export default function Footer() {
           </div>
         </div>
 
+        {/* Each letter fills with gold while hovered, then fades back slowly. */}
         <p className={styles.wordmark} aria-hidden="true">
-          {site.name}
+          {site.name.split('').map((ch, i) =>
+            ch === ' ' ? (
+              <span key={i}> </span>
+            ) : (
+              <span key={i} className={styles.letter}>
+                {ch}
+              </span>
+            ),
+          )}
         </p>
 
         <div className={styles.bottom}>

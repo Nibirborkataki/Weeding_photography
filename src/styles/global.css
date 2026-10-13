@@ -24,6 +24,7 @@
 
   --font-display: 'Cormorant Garamond', 'Times New Roman', serif;
   --font-body: 'Manrope', system-ui, -apple-system, 'Segoe UI', sans-serif;
+  --font-brand: 'Bodoni Moda', 'Didot', 'Times New Roman', serif; /* matches the logo's caps */
 
   --container: 1320px;
   --gutter: clamp(1.25rem, 4vw, 3rem);

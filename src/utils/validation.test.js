@@ -74,19 +74,36 @@ describe('validateContact', () => {
 describe('validateBookingStep', () => {
   const today = new Date(2026, 8, 30) // 30 Sep 2026
 
+  it('requires a known service and an occasion on step 0', () => {
+    expect(Object.keys(validateBookingStep(0, {}, today)).sort()).toEqual(['occasion', 'serviceId'])
+    expect(validateBookingStep(0, { serviceId: 'made-up', occasion: 'x' }, today).serviceId).toBeDefined()
+    expect(validateBookingStep(0, { serviceId: 'ceremonies', occasion: 'Mundan ceremony' }, today)).toEqual({})
+  })
+
   it('rejects past or same-day dates', () => {
-    expect(validateBookingStep(0, { date: '2026-09-30', venue: 'Goa', guests: '100-200' }, today).date).toMatch(/future/)
-    expect(validateBookingStep(0, { date: '2027-02-14', venue: 'Goa', guests: '100-200' }, today)).toEqual({})
+    const base = { serviceId: 'weddings', venue: 'Goa', guests: '150-300' }
+    expect(validateBookingStep(1, { ...base, date: '2026-09-30' }, today).date).toMatch(/future/)
+    expect(validateBookingStep(1, { ...base, date: '2027-02-14' }, today)).toEqual({})
   })
 
-  it('requires a collection on step 1', () => {
-    expect(validateBookingStep(1, {}, today).packageId).toBeDefined()
-    expect(validateBookingStep(1, { packageId: 'signature' }, today)).toEqual({})
+  it('asks for a guest count only for weddings and ceremonies', () => {
+    const base = { date: '2027-02-14', venue: 'Studio' }
+    expect(validateBookingStep(1, { ...base, serviceId: 'ceremonies' }, today).guests).toBeDefined()
+    expect(validateBookingStep(1, { ...base, serviceId: 'commercial' }, today)).toEqual({})
+    expect(validateBookingStep(1, { ...base, serviceId: 'portraits' }, today)).toEqual({})
   })
 
-  it('validates contact details on step 2', () => {
-    const errors = validateBookingStep(2, { partnerOne: 'A', partnerTwo: '', email: 'bad', phone: 'abc' }, today)
-    expect(Object.keys(errors).sort()).toEqual(['email', 'partnerTwo', 'phone'])
+  it('requires a package that belongs to the chosen service', () => {
+    expect(validateBookingStep(2, { serviceId: 'weddings' }, today).packageId).toBeDefined()
+    expect(validateBookingStep(2, { serviceId: 'weddings', packageId: 'celebration' }, today).packageId).toBeDefined()
+    expect(validateBookingStep(2, { serviceId: 'weddings', packageId: 'signature' }, today)).toEqual({})
+    expect(validateBookingStep(2, { serviceId: 'commercial', packageId: 'campaign' }, today)).toEqual({})
+  })
+
+  it('validates contact details on step 3, with a partner name only for weddings', () => {
+    const contact = { name: 'A', email: 'bad', phone: 'abc' }
+    expect(Object.keys(validateBookingStep(3, { ...contact, serviceId: 'weddings' }, today)).sort()).toEqual(['email', 'partnerName', 'phone'])
+    expect(Object.keys(validateBookingStep(3, { ...contact, serviceId: 'ceremonies' }, today)).sort()).toEqual(['email', 'phone'])
   })
 
   it('validateBooking merges all steps', () => {
