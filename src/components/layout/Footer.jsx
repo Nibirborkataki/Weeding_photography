@@ -105,6 +105,13 @@ export default function Footer() {
             Back to top ↑
           </button>
         </div>
+
+        <p className={styles.credit}>
+          Designed &amp; developed by{' '}
+          <a href="https://nibir-portfolio-pi.vercel.app/" target="_blank" rel="noopener noreferrer">
+            Nibir Borkataki <span aria-hidden="true">↗</span>
+          </a>
+        </p>
       </div>
     </footer>
   )

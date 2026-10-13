@@ -94,10 +94,39 @@
   flex-wrap: wrap;
   justify-content: space-between;
   gap: 1rem;
-  padding-block: 1.6rem 2rem;
+  padding-block: 1.6rem 1.2rem;
   border-top: 1px solid var(--line-dark);
   font-size: 0.78rem;
   color: var(--on-dark-soft);
+}
+
+.credit {
+  padding-bottom: 1.8rem;
+  text-align: center;
+  font-size: 0.74rem;
+  letter-spacing: 0.08em;
+  color: var(--on-dark-soft);
+}
+
+.credit a {
+  color: var(--gold-soft);
+  background: linear-gradient(currentColor, currentColor) 0 100% / 0 1px no-repeat;
+  transition: background-size 0.5s var(--ease-out), color 0.3s;
+}
+
+.credit a:hover,
+.credit a:focus-visible {
+  color: var(--on-dark);
+  background-size: 100% 1px;
+}
+
+.credit span {
+  display: inline-block;
+  transition: transform 0.4s var(--ease-out);
+}
+
+.credit a:hover span {
+  transform: translate(2px, -2px);
 }
 
 .toTop {
